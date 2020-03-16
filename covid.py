@@ -19,18 +19,6 @@ class covid_data:
     self.confirmed = p.read_csv(COVID_19_REPO_PATH + COVID_19_CONFIRMED)
     self.deaths = p.read_csv(COVID_19_REPO_PATH + COVID_19_DEATHS)
 
-
-# returns a dataframe of data
-def load_data ():
-    
-    configmed_us = summarize_us (confirmed)
-    confirmed_country = summarize_country (confirmed)
-    confirmed_state = summarize_state (confirmed)
-    deaths = p.read_csv(COVID_19_REPO_PATH + COVID_19_DEATHS)
-    deaths_summary = summarize_country (deaths)
-    deaths_state = summarize_state (confirmed)    
-
-
 def summarize_country (df_in):
     df_simpler = df_in.drop(['Province/State', 'Lat', 'Long'], axis=1)
     df_simpler_g = df_simpler.groupby('Country/Region')
@@ -38,11 +26,11 @@ def summarize_country (df_in):
     return df.T
 
 def summarize_us (df_in):
-    df_states = df_in [df_in['Country/Region'] == 'US']
-    # df_states = df_states[df_states['Province/State'].isin(states.US_STATES)]
-    df_states = df_states.drop(['Country/Region', 'Lat', 'Long'], axis=1)
-    df_states = df_states.set_index('Province/State')
-    df_us = df_states.T
+    df_states = df_in [df_in['Country/Region'] == 'US'].copy()
+    df_states['State'] = df_states['Province/State'].map(states.NAME_MAP)
+    df_states = df_states.drop(['Country/Region', 'Lat', 'Long', 'Province/State'], axis=1)
+    df_states_gb = df_states.groupby('State').sum()
+    df_us = df_states_gb.T
     df_us['US'] = df_us.sum(axis=1)
     return df_us
 
