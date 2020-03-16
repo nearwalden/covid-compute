@@ -15,24 +15,25 @@ COVID_19_CONFIRMED = "time_series_19-covid-Confirmed.csv"
 COVID_19_DEATHS = "time_series_19-covid-Deaths.csv"
 
 class covid_data:
-  def __init__(self):
-    self.confirmed = p.read_csv(COVID_19_REPO_PATH + COVID_19_CONFIRMED)
-    self.deaths = p.read_csv(COVID_19_REPO_PATH + COVID_19_DEATHS)
+    def __init__(self):
+        self.confirmed = p.read_csv(COVID_19_REPO_PATH + COVID_19_CONFIRMED)
+        self.deaths = p.read_csv(COVID_19_REPO_PATH + COVID_19_DEATHS)
 
-def summarize_country (df_in):
-    df_simpler = df_in.drop(['Province/State', 'Lat', 'Long'], axis=1)
-    df_simpler_g = df_simpler.groupby('Country/Region')
-    df = df_simpler_g.sum().copy()
-    return df.T
+    def summarize_us (df_in):
+        df_states = df_in [df_in['Country/Region'] == 'US'].copy()
+        df_states['State'] = df_states['Province/State'].map(states.NAME_MAP)
+        df_states = df_states.drop(['Country/Region', 'Lat', 'Long', 'Province/State'], axis=1)
+        df_states_gb = df_states.groupby('State').sum()
+        df_us = df_states_gb.T
+        df_us['US'] = df_us.sum(axis=1)
+        return df_us
 
-def summarize_us (df_in):
-    df_states = df_in [df_in['Country/Region'] == 'US'].copy()
-    df_states['State'] = df_states['Province/State'].map(states.NAME_MAP)
-    df_states = df_states.drop(['Country/Region', 'Lat', 'Long', 'Province/State'], axis=1)
-    df_states_gb = df_states.groupby('State').sum()
-    df_us = df_states_gb.T
-    df_us['US'] = df_us.sum(axis=1)
-    return df_us
+    def summarize_countries (df_in):
+        df_simpler = df_in.drop(['Province/State', 'Lat', 'Long'], axis=1)
+        df_simpler_g = df_simpler.groupby('Country/Region')
+        df = df_simpler_g.sum().copy()
+        return df.T
+
 
 def plot (df, params, title):
     fig, ax = plt.subplots()
