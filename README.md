@@ -1,6 +1,6 @@
 # COVID Data Analysis
 
-This repo contains some routines that assist in analyzing COVID-19 data.  It works with the Johns Hopkins data and organizes it into pandas dataframes that are useful to work with. 
+This repo contains some routines that assist in analyzing COVID-19 data.  It works with the Johns Hopkins data and organizes it into pandas dataframes that are more reasonable to work with. 
 
 ## Prerequisites
 
