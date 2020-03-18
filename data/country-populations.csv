@@ -25,7 +25,7 @@ Italy,60243406
 South Africa,58775022
 Tanzania,55890747
 Myanmar,54339766
-South Korea,51780579
+"Korea, South",51780579
 Colombia,49395678
 Kenya,47564296
 Spain,47100396
@@ -54,7 +54,7 @@ Cote d'Ivoire,25823071
 Madagascar,25680342
 Australia,25647852
 North Korea,25450000
-Taiwan,23604265
+Taiwan*,23604265
 Niger,22314743
 Sri Lanka,21803000
 Burkina Faso,20870060
@@ -174,7 +174,7 @@ Malta,493559
 Transnistria,469000
 Brunei,442400
 Belize,408487
-Bahamas,385340
+The Bahamas,385340
 Maldives,374775
 Iceland,364260
 Northern Cyprus,351965
@@ -190,7 +190,7 @@ Kiribati,120100
 Aruba,112309
 Grenada,112003
 Saint Vincent and the Grenadines,110608
-Jersey (UK),106800
+Jersey,106800
 F.S. Micronesia,104468
 Tonga,100651
 Seychelles,97625
@@ -198,9 +198,9 @@ Antigua and Barbuda,96453
 Isle of Man (UK),83314
 Andorra,77543
 Dominica,71808
-Cayman Islands (UK),65813
-Bermuda (UK),64027
-Guernsey (UK),62792
+Cayman Islands,65813
+Bermuda,64027
+Guernsey,62792
 Greenland,56081
 Marshall Islands,55500
 South Ossetia,53532
@@ -211,18 +211,18 @@ Sint Maarten (Netherlands),40614
 Liechtenstein,38557
 Monaco,38300
 Saint Martin (France),35746
-Gibraltar (UK),33701
+Gibraltar,33701
 San Marino,33574
-British Virgin Islands (UK),30030
-Åland Islands (Finland),29885
+British Virgin Islands,30030
+Åland Islands,29885
 Palau,17900
-Cook Islands (NZ),15200
-Anguilla (UK),14869
-Wallis and Futuna (France),11700
+Cook Islands,15200
+Anguilla,14869
+Wallis and Futuna,11700
 Nauru,11000
 Tuvalu,10200
-Saint Barthélemy (France),9793
-Saint Pierre and Miquelon (France),6008
+Saint Barthélemy,9793
+Saint Pierre and Miquelon,6008
 Saint Helena,5633
 Montserrat (UK),4989
 Falkland Islands (UK),3198
@@ -230,9 +230,16 @@ Christmas Island (Australia),1928
 Norfolk Island (Australia),1756
 Niue (NZ),1520
 Tokelau (NZ),1400
-Vatican City,799
+Holy See,799
 Cocos (Keeling) Islands (Australia),538
 Pitcairn Islands (UK),50
 Cruise Ship,5000
 French Guiana,290000
 Guadeloupe,395000
+Guam,165718
+Martinique, 376000
+Mayotte, 279000
+Puerto Rico,3193694
+Republic of the Congo,5518092
+Reunion,859000
+occupied Palestinian territory,4550000
