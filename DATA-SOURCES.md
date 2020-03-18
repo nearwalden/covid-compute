@@ -2,7 +2,9 @@
 
 The following data sources are used in this code:
 
-- [John Hopkins website data](https://github.com/CSSEGISandData/COVID-19).  This repo contains the data that drives the John Hopkins COVID-19 map.  Just clone the repo and modify the path in `covid.py` to point to it.
+- [John Hopkins website data](https://github.com/CSSEGISandData/COVID-19).  This repo contains the data that drives the John Hopkins COVID-19 map.  Just clone the repo and modify the path in `covid.py` to point to it.  
+
+- [State populations](data/state-populations.csv).  From Wikipedia on 20200317.  State abbreviations match above dataset.
 
 ## Other Sources
 

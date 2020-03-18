@@ -11,7 +11,7 @@ This code was written for Python 3.  The following packages are required:
 
 ## Data Sources
 
-[This page](DATA.md) describes the sources for the data used here.
+[This page](DATA.md) describes the sources for the data used here.  The main data that's here today is the 
 
 ## Usage
 
@@ -29,5 +29,34 @@ Next, create a `CovidData` object that cleans up all of the data and makes a bun
 import covid
 cd = covid.CovidData('/home/dd/git/')  # assumes data is in /home/dd/git/COVID-19...
 ```
+
+## dataframes
+
+A `CovidData` object contains the two types of data structures.  Ones that include on data element for all states or countries, and ones that contain multiple data elements for one state or country.  In all data structures each row is a day in the time series.  Country names are spelled out and states use the two character abbreviation. 
+
+- confirmed_us:  confirmed cases for each state
+- confirmed_countries:  confirmed casee for each country
+- deaths_us:  deaths for each state
+- deaths_countries:  deaths for each country
+- states:  a dict where the keys are state names, and the dataframe has confirmed cases and deaths.
+- countries:  a dict where the keys are country names, and the dataframe has confirmed cases and deaths.
+
+## methods
+
+The `CovidData` object has a couple of basic plotting methods so far:
+
+`plot_states(states, conf_or_death)`
+- *states* - an array of state names (2-character abbreviations)
+- *conf_or_death* - set to 'confirmed' or 'deaths'
+
+
+`plot_countries(countries, conf_or_death)`
+- *countries* - an array of country names 
+- *conf_or_death* - set to 'confirmed' or 'deaths'
+  
+`
+
+
+
 
 
