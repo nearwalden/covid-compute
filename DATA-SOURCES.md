@@ -6,6 +6,8 @@ The following data sources are used in this code:
 
 - [State populations](data/state-populations.csv).  From Wikipedia on 20200317.  State abbreviations match above dataset.
 
+- [Country populations](data/country-populations.csv).  From Wikipedia on 20200318.  Country names match above dataset.
+
 ## Other Sources
 
 The following sources are not used, but may be useful for future work.
