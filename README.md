@@ -11,7 +11,7 @@ This code was written for Python 3.  The following packages are required:
 
 ## Data Sources
 
-[This page](DATA.md) describes the sources for the data used here.  The main data that's here today is the 
+[This page](DATA-SOURCES.md) describes the sources for the data used here.  The main data that's here today is the 
 
 ## Usage
 
@@ -32,7 +32,7 @@ cd = covid.CovidData('/home/dd/git/')  # assumes data is in /home/dd/git/COVID-1
 
 ## dataframes
 
-A `CovidData` object contains the two types of data structures.  Ones that include on data element for all states or countries, and ones that contain multiple data elements for one state or country.  In all data structures each row is a day in the time series.  Country names are spelled out and states use the two character abbreviation. 
+A `CovidData` object contains  two types of data structures.  Ones that dataframes that include a single data items for all states or countries, and ones that contain many data structures, each with multiple data items for one state or country.  In all data structures each row is a day in the time series.  Country names are spelled out and states use the two character abbreviation. 
 
 - confirmed_us:  confirmed cases for each state
 - confirmed_countries:  confirmed casee for each country
