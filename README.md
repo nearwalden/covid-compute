@@ -40,6 +40,8 @@ A `CovidData` object contains  two types of data structures.  Ones that datafram
 - deaths_countries:  deaths for each country
 - states:  a dict where the keys are state names, and the dataframe has confirmed cases and deaths.
 - countries:  a dict where the keys are country names, and the dataframe has confirmed cases and deaths.
+- country_populations:  populations of all countries, indexed by name
+- state_populations:  populations of states and US, indexed by 2-character abbreviation.
 
 ## methods
 
@@ -49,12 +51,15 @@ The `CovidData` object has a couple of basic plotting methods so far:
 - *states* - an array of state names (2-character abbreviations)
 - *conf_or_death* - set to 'confirmed' or 'deaths'
 
-
 `plot_countries(countries, conf_or_death)`
 - *countries* - an array of country names 
 - *conf_or_death* - set to 'confirmed' or 'deaths'
   
-`
+The following return the countries or states in the dataset, useful for iterating.
+
+`countries_list()`
+
+`states_list()`
 
 
 

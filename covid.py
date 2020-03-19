@@ -3,7 +3,7 @@
 
 import pandas as p
 import matplotlib.pyplot as plt
-import states
+import state_fixes
 
 # this should be set to the location where you have cloned the repo above
 COVID_19_REPO_PATH = "COVID-19/csse_covid_19_data/csse_covid_19_time_series/"
@@ -24,10 +24,12 @@ class CovidData:
         self.deaths_countries = self.summarize_countries (self.deaths)
         self.states = self.make_indiv_tables (self.confirmed_us, self.deaths_us)
         self.countries = self.make_indiv_tables (self.confirmed_countries, self.deaths_countries)
+        self.state_populations = p.read_csv ('data/state-populations.csv').set_index('state')
+        self.country_populations = p.read_csv ('data/country-populations.csv').set_index('country')        
 
     def summarize_us (self, df_in):
         df_states = df_in [df_in['Country/Region'] == 'US'].copy()
-        df_states['State'] = df_states['Province/State'].map(states.NAME_MAP)
+        df_states['State'] = df_states['Province/State'].map(state_fixes.NAME_MAP)
         df_states = df_states.drop(['Country/Region', 'Lat', 'Long', 'Province/State'], axis=1)
         df_states_gb = df_states.groupby('State').sum()
         df_us = df_states_gb.T
@@ -48,6 +50,12 @@ class CovidData:
             new_df['deaths'] = deaths[name]
             tables[name] = new_df
         return tables
+
+    def states_list (self):
+        return (list (self.confirmed_us.columns))
+
+    def countries_list (self):
+        return (list (self.confirmed_countries.columns))        
 
     def plot_states (self, states, conf_or_death):
         if conf_or_death == 'confirmed':
