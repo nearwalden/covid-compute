@@ -69,6 +69,15 @@ class CovidData:
         ax.set_title ('State cases (' + conf_or_death + ')')
         plt.show()
 
+    def plot_state_pct_change (self, states):
+        df = self.confirmed_us
+        fig, ax = plt.subplots()
+        for state in states:
+            ax.plot(df.index, df[state].pct_change(), marker='o')
+        ax.legend()
+        ax.set_title ('Daily % incrase in cases')
+        plt.show()
+
     def plot_countries (self, countries, conf_or_death):
         if conf_or_death == 'confirmed':
             df = self.confirmed_countries
