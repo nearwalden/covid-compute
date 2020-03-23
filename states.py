@@ -26,13 +26,13 @@ def analyze (path):
         state_data['pct_change'] = state_data['confirmed'].pct_change()
         # 3-day window
         if state_data.iloc[-1]['confirmed'] == state_data.iloc[-2]['confirmed']:
-            # item['pct_change_3day'] = state_data.iloc[-4:-1]['pct_change'].mean()
-            # item['pct_change_3day_prev'] = state_data.iloc[-7:-4]['pct_change'].mean()
-            item['pct_change_3day'] = state_data.iloc[-3:-1]['pct_change'].mean()
-            item['pct_change_3day_prev'] = state_data.iloc[-5:-3]['pct_change'].mean()
+            item['pct_change_3day'] = state_data.iloc[-4:-1]['pct_change'].mean()
+            item['pct_change_3day_prev'] = state_data.iloc[-7:-4]['pct_change'].mean()
+            item['pct_change_2day'] = state_data.iloc[-3:-1]['pct_change'].mean()
+            item['pct_change_2day_prev'] = state_data.iloc[-5:-3]['pct_change'].mean()
         else:
-            # item['pct_change_3day'] = state_data.iloc[-3:]['pct_change'].mean()
-            # item['pct_change_3day_prev'] = state_data.iloc[-6:-3]['pct_change'].mean()
+            item['pct_change_3day'] = state_data.iloc[-3:]['pct_change'].mean()
+            item['pct_change_3day_prev'] = state_data.iloc[-6:-3]['pct_change'].mean()
             item['pct_change_2day'] = state_data.iloc[-2:]['pct_change'].mean()
             item['pct_change_2day_prev'] = state_data.iloc[-4:-2]['pct_change'].mean()
         # delta = state_data.iloc[-6:-3]['pct_change'].mean() - state_data.iloc[-3:]['pct_change'].mean()
