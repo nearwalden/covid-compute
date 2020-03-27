@@ -4,18 +4,14 @@
 import pandas as p
 import matplotlib.pyplot as plt
 import state_fixes
+import datetime
 
 # this should be set to the location where you have cloned the repo above
-COVID_19_REPO_PATH = "COVID-19/csse_covid_19_data/csse_covid_19_time_series/"
-
-# confirmed file
-COVID_19_CONFIRMED = "time_series_19-covid-Confirmed.csv"
-
-# confirmed file
-COVID_19_DEATHS = "time_series_19-covid-Deaths.csv"
+COVID_19_REPO_PATH = "COVID-19/csse_covid_19_data/csse_covid_19_daily_reports/"
 
 class CovidData:
     def __init__(self, base_path):
+        self.base_path = base_path
         self.confirmed = p.read_csv(base_path + COVID_19_REPO_PATH + COVID_19_CONFIRMED)
         self.deaths = p.read_csv(base_path + COVID_19_REPO_PATH + COVID_19_DEATHS)
         self.county_data = p.read_csv ('data/biggest_us_counties.csv').set_index('name')       
@@ -30,6 +26,10 @@ class CovidData:
         self.biggest_counties = self.make_indiv_tables (self.confirmed_biggest_counties, self.deaths_biggest_counties)
         self.state_populations = p.read_csv ('data/state-populations.csv').set_index('state')
         self.country_populations = p.read_csv ('data/country-populations.csv').set_index('country')
+
+    def load_file (self, date):
+        filename = self.base_path + COVID_19_REPO_PATH + datetime.strftime("%Y-%m-%d") + ".csv"
+        return p.read_csv(filename)
 
     def summarize_us (self, df_in):
         df_states = df_in [df_in['Country/Region'] == 'US'].copy()
@@ -116,7 +116,29 @@ class CovidData:
         ax.set_title ('Country cases (' + conf_or_death + ')')
         plt.show()
 
+# routines to get the pump primed
+# initial date is 1/22/2020
+# can do country and US state in format 1 through 1/31
+# can do country and US state in format 2 through 3/9
+# can do country and state in format 3 through 3/21
+# can do country, state and county in format 4 starting 3/22
+# 
 
+def load_file (base_path, date):
+    filename = base_path + COVID_19_REPO_PATH + date.strftime("%m-%d-%Y") + ".csv"
+    return p.read_csv(filename)
+
+def summarize_countries_1 (df_in):
+    # df_simpler = df_in.drop(['Province/State', 'Last Update', 'Recovered'], axis=1)
+    df_simpler_g = df_in.groupby('Country/Region')
+    df = df_simpler_g.sum().copy()
+    return df['Confirmed']
+    #return df.T
+
+def first_file (base_path):
+    d = datetime.date(2020, 1, 22)
+
+    for i in range(20):
 
     
 
