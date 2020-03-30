@@ -1,7 +1,7 @@
 # Analyze the state of US states
 
 import pandas as p
-import covid
+import covid2
 
 # returns a dataframe with per-state analysis:
 #   confirmed cases
@@ -11,8 +11,8 @@ import covid
 #   average dailly confirmed increase (%), 3-day avg
 #   change in confirmed case increase (%), 3-day v. prev 3-day
 
-def analyze (path):
-    cd = covid.CovidData (path)
+def analyze ():
+    cd = covid2.CovidData ()
     out = []
     # iterate over states
     for state in cd.states_list():
@@ -46,12 +46,13 @@ def analyze (path):
 def last_peak (s):
     i = 0
     j = 0
-    while True:
+    while i < len(s)-1:
         if s[-1 - i] > s[-2 - i]:
             return (i - j)
         if s[-1 - i] == 0:
             j += 1
         i += 1
+    return 0
 
 
         
