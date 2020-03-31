@@ -1,7 +1,7 @@
 # Analyze the state of US states
 
 import pandas as p
-import covid2
+import covid
 
 # returns a dataframe with per-state analysis:
 #   confirmed cases
@@ -12,7 +12,7 @@ import covid2
 #   change in confirmed case increase (%), 3-day v. prev 3-day
 
 def analyze ():
-    cd = covid2.CovidData ()
+    cd = covid.CovidData ()
     out = []
     # iterate over states
     for state in cd.states_list():
