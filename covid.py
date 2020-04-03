@@ -12,17 +12,22 @@ COVID_19_REPO_PATH = "COVID-19/csse_covid_19_data/csse_covid_19_daily_reports/"
 STATE_CONF_PATH = "data/state_confirmed.csv"
 STATE_DEATHS_PATH = "data/state_deaths.csv"
 
+COUNTY_CONF_PATH = "data/county_confirmed.csv"
+COUNTY_DEATHS_PATH = "data/county_deaths.csv"
+
 class CovidData:
     def __init__(self):
         # self.county_data = p.read_csv ('data/biggest_us_counties.csv').set_index('name')       
         us = p.read_csv (STATE_CONF_PATH).set_index('Date')
         self.confirmed_us = us.drop(['Other', 'SHIP', 'Unnamed: 0'], 1) 
-        self.confirmed_us['US'] = self.confirmed_us.sum(axis=1)       
+        self.confirmed_us['US'] = self.confirmed_us.sum(axis=1)    
+        self.confirmed_counties = p.read_csv (COUNTY_CONF_PATH).set_index('Date')           
         # self.confirmed_countries = self.summarize_countries (self.confirmed)
         # self.confirmed_biggest_counties = self.summarize_counties (self.confirmed)
         us = p.read_csv(STATE_DEATHS_PATH).set_index('Date')   
         self.deaths_us = us.drop(['Other', 'SHIP', 'Unnamed: 0'], 1)                   
         self.deaths_us['US'] = self.deaths_us.sum(axis=1)       
+        self.confirmed_counties = p.read_csv (COUNTY_DEATHS_PATH).set_index('Date')           
         # self.deaths_countries = self.summarize_countries (self.deaths)
         # self.deaths_biggest_counties = self.summarize_counties (self.deaths)
         self.states = self.make_indiv_tables (self.confirmed_us, self.deaths_us)
@@ -110,36 +115,31 @@ def load_file (base_path, date):
 #    Once you have that you shouldn't need to run these again.
 
 def first_file (base_path):
-    d = datetime.date(2020, 1, 22)
-    ctry_conf = [] 
-    ctry_deaths = []
-    state_conf = [] 
-    state_deaths = []
+    d = datetime.date(2020, 3, 22)
+    cty_conf = [] 
+    cty_deaths = []
     curr_date = ""
-    for i in range(60):
+    for i in range(10):
         curr_date = d.strftime("%m-%d-%Y")
         path = base_path + COVID_19_REPO_PATH + curr_date + ".csv"
         df = p.read_csv(path)
-        df_ctry = df.groupby('Country/Region').sum().T
-        df_ctry['Date'] = curr_date
-        ctry_conf.append(df_ctry.loc['Confirmed'])
-        ctry_deaths.append(df_ctry.loc['Deaths'])
-        df_us = df[df['Country/Region'] == 'US']
-        df_us['State'] = df_us['Province/State'].apply(lambda x: state_fixes.NAME_MAP[x])
-        df_state = df_us.groupby('State').sum().T
-        df_state['Date'] = curr_date
-        state_conf.append(df_state.loc['Confirmed'])
-        state_deaths.append(df_state.loc['Deaths'])
+        df_us = df[df['Country_Region'] == 'US']
+        df_cty = df_us[df_us['Admin2'] != 'Unassigned']
+        df_cty = df_cty[df_cty['Admin2'] != None]        
+        df_cty['State'] = df_cty['Province_State'].apply(lambda x: state_fixes.STATE_MAP[x])
+        df_cty['County'] = df_cty['Admin2'].astype(str) + ', ' + df_cty['State'].astype(str)
+        df_cty = df_cty.set_index('County').T
+        df_cty['Date'] = curr_date
+        cty_conf.append(df_cty.loc['Confirmed'].to_dict())
+        cty_deaths.append(df_cty.loc['Deaths'].to_dict())
         print ("Processed " + curr_date)        
         d += datetime.timedelta(days=1)
-    write_data (ctry_conf, 'data/country_confirmed.csv')
-    write_data (ctry_deaths, 'data/country_deaths.csv')
-    write_data (state_conf, 'data/state_confirmed.csv')
-    write_data (state_deaths, 'data/state_deaths.csv')
+    write_data (cty_conf, COUNTY_CONF_PATH)
+    write_data (cty_deaths, COUNTY_DEATHS_PATH)
 
 def write_data (d, path):
-    df = p.DataFrame(d).reset_index()
-    df = df.drop('index', 1)
+    df = p.DataFrame(d)  # .reset_index()
+    # df = df.drop('index', 1)
     df.fillna(0).to_csv(path)
 
 # these work with the new format
@@ -151,17 +151,34 @@ def add_day (base_path, d):
     df = load_file (base_path, d)
     df_us = df[df['Country_Region'] == 'US'].copy()
     df_us['State'] = df_us['Province_State'].apply(lambda x: state_fixes.STATE_MAP[x])
+    # state stuff
     df_state = df_us.groupby('State').sum().T
     df_state['Date'] = d.strftime("%m-%d-%Y")
     # return (add_line(df_ctry.loc['Confirmed'], 'data/country_confirmed.csv'))
-    add_line (df_state.loc['Confirmed'], STATE_CONF_PATH)
-    add_line (df_state.loc['Deaths'], STATE_DEATHS_PATH)    
+    add_line_state (df_state.loc['Confirmed'], STATE_CONF_PATH)
+    add_line_state (df_state.loc['Deaths'], STATE_DEATHS_PATH) 
+    # county stuff
+    df_cty = df_us[df_us['Admin2'] != 'Unassigned']
+    df_cty = df_cty[df_cty['Admin2'] != None]
+    df_cty['County'] = df_cty['Admin2'].astype(str) + ', ' + df_cty['State'].astype(str)
+    df_cty = df_cty.set_index('County').T
+    df_cty['Date'] = d.strftime("%m-%d-%Y")
+    add_line_cty (df_cty.loc['Confirmed'], COUNTY_CONF_PATH)
+    add_line_cty (df_cty.loc['Deaths'], COUNTY_DEATHS_PATH) 
+  
 
-def add_line (df_line, path):
+def add_line_state (df_line, path):
     df = p.read_csv (path)
     df_new = df.append(df_line, ignore_index=True).fillna(0)
     df_new = df_new.drop('Unnamed: 0', 1)
     df_new.to_csv(path)
+
+def add_line_cty (df_line, path):
+    df = p.read_csv (path)
+    df_new = df.append(df_line.to_dict(), ignore_index=True).fillna(0)
+    df_new = df_new.drop('Unnamed: 0', 1)
+    df_new.to_csv(path)
+
 
 
 

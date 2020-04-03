@@ -2,7 +2,7 @@
 
 This repo contains some routines that assist in analyzing COVID-19 data.  It works with the Johns Hopkins data and organizes it into pandas dataframes that are more reasonable to work with.  
 
-Note 1:   this is currently only creating a US dataset with data for each state.  Countries will be added back in shortly (they changed a bunch of names and I just need to fix them) and we can do county-level data starting going back to 3/22.
+Note 1:   this is currently only creating a US dataset with data for each state and each county.  Countries will be added back in shortly (they changed a bunch of names and I just need to fix them).
 
 Note 2:   when I switched to the daily reports from Hopkins you now have to run a script to ingest them.  See `Updating the data` below.  
 
@@ -36,10 +36,12 @@ cd = covid.CovidData('/home/dd/git/')  # assumes data is in /home/dd/git/COVID-1
 
 ## Data files
 
-The extracted data files are stored in `/data` in this git repo.  The two key files right now are:
+The extracted data files are stored in `/data` in this git repo.  The four key files right now are:
 
-- `state_confirmed.csv`
-- `state_deaths.csv`
+- `state_confirmed.csv` - from 1/22/20
+- `state_deaths.csv` - from 1/22/20
+- `county_confirmed.csv` - from 3/22/20
+- `county_deaths.csv` - from 3/22/20
 
 These are loaded into dataframes the `covid.CovidData` object and a number of other dataframes are created from them.
 
@@ -59,14 +61,13 @@ Should just work, let me know if it doesn't!
 
 ## Dataframes
 
-A `CovidData` object contains  two types of data structures.  Ones that dataframes that include a single data items for all states or countries, and ones that contain many data structures, each with multiple data items for one state or country.  In all data structures each row is a day in the time series.  Country names are spelled out and states use the two character abbreviation. 
+A `CovidData` object contains  two types of data structures.  Ones that dataframes that include a single data items for all states or counties, and ones that contain many data structures, each with multiple data items for one state or country.  In all data structures each row is a day in the time series.  State names use the two character abbreviation, and counties use the format `Name, STATE` with the county name and state abbreviation respectively. 
 
 - confirmed_us:  confirmed cases for each state
-- confirmed_countries:  confirmed casee for each country
+- confirmed_counties:  confirmed casee for each county
 - deaths_us:  deaths for each state
-- deaths_countries:  deaths for each country
+- deaths_counties:  deaths for each country
 - states:  a dict where the keys are state names, and the dataframe has confirmed cases and deaths.
-- countries:  a dict where the keys are country names, and the dataframe has confirmed cases and deaths.
 - country_populations:  populations of all countries, indexed by name
 - state_populations:  populations of states and US, indexed by 2-character abbreviation.
 
@@ -83,8 +84,6 @@ The `CovidData` object has a couple of basic plotting methods so far:
 - *conf_or_death* - set to 'confirmed' or 'deaths'
   
 The following return the countries or states in the dataset, useful for iterating.
-
-`countries_list()`
 
 `states_list()`
 
