@@ -70,6 +70,8 @@ A `CovidData` object contains  two types of data structures.  Ones that datafram
 - states:  a dict where the keys are state names, and the dataframe has confirmed cases and deaths.
 - country_populations:  populations of all countries, indexed by name
 - state_populations:  populations of states and US, indexed by 2-character abbreviation.
+- biggest_counties_data:  populations and area (sqare miles) for the top 90+ counties and NYC.
+- biggest_counties:  a dict where the keys are county names ("county, ST") and each value is a dataframe with deaths and confirmed cases for that county.  Top 90+ counties and NYC.
 
 ## methods
 
@@ -90,6 +92,9 @@ The following return the countries or states in the dataset, useful for iteratin
 ## Other code
 
 In `states.py` the function `analyze()` creates a dataframe with a bunch of interesting state-level data.  
+
+In `counties.py` the function `analyze()` creates a dataframe with a bunch of interesting county-level data.  It includes the top 90+ counties by population, plus NYC rolled into a single record.
+
 
 
 

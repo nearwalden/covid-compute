@@ -27,22 +27,29 @@ class CovidData:
         us = p.read_csv(STATE_DEATHS_PATH).set_index('Date')   
         self.deaths_us = us.drop(['Other', 'SHIP', 'Unnamed: 0'], 1)                   
         self.deaths_us['US'] = self.deaths_us.sum(axis=1)       
-        self.confirmed_counties = p.read_csv (COUNTY_DEATHS_PATH).set_index('Date')           
+        self.deaths_counties = p.read_csv (COUNTY_DEATHS_PATH).set_index('Date')           
         # self.deaths_countries = self.summarize_countries (self.deaths)
         # self.deaths_biggest_counties = self.summarize_counties (self.deaths)
         self.states = self.make_indiv_tables (self.confirmed_us, self.deaths_us)
         # self.countries = self.make_indiv_tables (self.confirmed_countries, self.deaths_countries)
         # self.biggest_counties = self.make_indiv_tables (self.confirmed_biggest_counties, self.deaths_biggest_counties)
         self.state_populations = p.read_csv ('data/state-populations.csv').set_index('state')
+        self.biggest_counties_data = p.read_csv ('data/biggest_us_counties.csv').set_index('name')
+        self.biggest_counties = self.make_indiv_tables (self.confirmed_counties, self.deaths_counties, \
+            (list (self.biggest_counties_data.index)))
         # self.country_populations = p.read_csv ('data/country-populations.csv').set_index('country')
 
     # def load_file (self, date):
     #     filename = self.base_path + COVID_19_REPO_PATH + datetime.strftime("%Y-%m-%d") + ".csv"
     #     return p.read_csv(filename)
 
-    def make_indiv_tables (self, confirmed, deaths):
+    def make_indiv_tables (self, confirmed, deaths, columns=None):
+        if columns == None:
+            cols = confirmed.columns
+        else:
+            cols = columns
         tables = {}
-        for name in confirmed.columns:
+        for name in cols:
             new_df = p.DataFrame()
             new_df['confirmed'] = confirmed[name]
             new_df['deaths'] = deaths[name]
@@ -52,40 +59,43 @@ class CovidData:
     def states_list (self):
         return (list (self.confirmed_us.columns))
 
+    def biggest_counties_list (self):
+        return (list (self.biggest_counties_data.index))
+
     # def countries_list (self):
     #     return (list (self.confirmed_countries.columns))
 
     # def counties_list (self):
     #     return (list (self.confirmed_biggest_counties))        
 
-    def plot_states (self, states, conf_or_death):
+    def plot_counties (self, counties, conf_or_death):
         if conf_or_death == 'confirmed':
             df = self.confirmed_us
         else:
             df = self.deaths_us
         fig, ax = plt.subplots()
-        for state in states:
+        for state in counties:
             ax.plot(df.index, df[state], marker='o')
         ax.legend()
         ax.set_title ('State cases (' + conf_or_death + ')')
         plt.show()
 
-    def plot_state_pct_change (self, states):
+    def plot_state_pct_change (self, counties):
         df = self.confirmed_us
         fig, ax = plt.subplots()
-        for state in states:
+        for state in counties:
             ax.plot(df.index, df[state].pct_change(), marker='o')
         ax.legend()
         ax.set_title ('Daily % incrase in cases')
         plt.show()
 
-    def plot_state_new_cases (self, states):
+    def plot_state_new_cases (self, counties):
         df = self.confirmed_us
         fig, ax = plt.subplots()
-        for state in states:
+        for state in counties:
             ax.plot(df.index, df[state].diff(), marker='o')
         ax.legend()
-        ax.set_title ('Number of new cases')
+        ax.set_title ('Number of new cases - ')
         plt.show()
 
 
