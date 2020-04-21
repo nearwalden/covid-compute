@@ -20,29 +20,33 @@ def analyze ():
         item = {'county': county}
         pop = cd.biggest_counties_data.loc[county]['population']
         area = cd.biggest_counties_data.loc[county]['land_area_mi2']        
-        item['confirmed'] = int(county_data.iloc[-1]['confirmed'])
-        item['confirmed/1M'] = item['confirmed'] * 1000000 / pop
-        item['confirmed/sqmi'] = item['confirmed'] / area
+        item['conf'] = int(county_data.iloc[-1]['confirmed'])
+        item['conf/1M'] = item['conf'] * 1000000 / pop
+        item['conf/sqmi'] = item['conf'] / area
         item['deaths'] = int(county_data.iloc[-1]['deaths'])
         item['deaths/1M'] = item['deaths'] * 1000000 / pop
-        county_data['pct_change'] = county_data['confirmed'].pct_change()
+        county_data['conf_pct_change'] = county_data['confirmed'].pct_change()
+        county_data['deaths_pct_change'] = county_data['deaths'].pct_change()
         county_data['new_cases'] = county_data['confirmed'].diff()
+        county_data['new_deaths'] = county_data['deaths'].diff()        
         # 2-day and 3-day window
         if county_data.iloc[-1]['confirmed'] == county_data.iloc[-2]['confirmed']:
             # item['pct_change_3day'] = county_data.iloc[-4:-1]['pct_change'].mean()
             # item['pct_change_3day_prev'] = county_data.iloc[-7:-4]['pct_change'].mean()
-            item['pct_change_2day'] = county_data.iloc[-3:-1]['pct_change'].mean()
-            item['pct_change_2day_prev'] = county_data.iloc[-5:-3]['pct_change'].mean()
+            item['conf_pct_chg'] = county_data.iloc[-3:-1]['conf_pct_change'].mean()
+            item['conf_pct_chg_prev'] = county_data.iloc[-5:-3]['conf_pct_change'].mean()
         else:
             # item['pct_change_3day'] = county_data.iloc[-3:]['pct_change'].mean()
             # item['pct_change_3day_prev'] = county_data.iloc[-6:-3]['pct_change'].mean()
-            item['pct_change_2day'] = county_data.iloc[-2:]['pct_change'].mean()
-            item['pct_change_2day_prev'] = county_data.iloc[-4:-2]['pct_change'].mean()
+            item['conf_pct_chg'] = county_data.iloc[-2:]['conf_pct_change'].mean()
+            item['conf_pct_chg_prev'] = county_data.iloc[-4:-2]['conf_pct_change'].mean()
         # delta = county_data.iloc[-6:-3]['pct_change'].mean() - county_data.iloc[-3:]['pct_change'].mean()
-        item['last_peak_pct'] = last_peak(county_data['pct_change'])
-        item['last_peak_value'] = last_peak(county_data['new_cases'])
-        item['days_since_peak'] = len(county_data) - county_data.reset_index()['new_cases'].idxmax() - 1
-        item['new_cases/1M'] = county_data['new_cases'][-2:-1].mean() *1000000 / pop
+        item['deaths_pct_chg'] = county_data.iloc[-2:]['deaths_pct_change'].mean()
+        item['deaths_pct_chg_prev'] = county_data.iloc[-4:-2]['deaths_pct_change'].mean()
+        # item['last_peak_pct'] = last_peak(county_data['conf_pct_change'])
+        # item['last_peak_value'] = last_peak(county_data['new_cases'])
+        item['conf_days_peak'] = len(county_data) - county_data.reset_index()['new_cases'].idxmax() - 1
+        item['deaths_days_peak'] = len(county_data) - county_data.reset_index()['new_deaths'].idxmax() - 1        
         out.append(item)
     return p.DataFrame(out).set_index('county')     
 
