@@ -127,7 +127,22 @@ def deaths_1m_bins (d):
     df = p.DataFrame(data)
     return p.cut(df['deaths_1m'], bins).value_counts()    
 
-   
+def deaths_1m (d):
+    cd = covid.CovidData ()
+    data = []
+    d_str = d.strftime('%m-%d-%Y')
+    bins = p.IntervalIndex.from_tuples([(0, 1), (1, 2), (2, 3), (3, 4), \
+                                        (4, 6), (6, 8), (8, 10), (10, 500)])
+    for state in cd.states_list():
+        state_data = cd.states[state]
+        item = {'state': state}
+        pop = cd.state_populations.loc[state]['population']
+        state_data['deaths'] = state_data['deaths'].diff()
+        state_data['deaths_1m'] = state_data['deaths'] * 1000000 /pop
+        item['deaths_1m'] = state_data.loc[d_str]['deaths_1m']
+        data.append(item)
+    return p.DataFrame(data)
+  
 
   
 

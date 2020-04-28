@@ -68,35 +68,20 @@ class CovidData:
     # def counties_list (self):
     #     return (list (self.confirmed_biggest_counties))        
 
-    def plot_counties (self, counties, conf_or_death):
-        if conf_or_death == 'confirmed':
-            df = self.confirmed_us
-        else:
-            df = self.deaths_us
+    def plot_county (self, county):
+        df = self.confirmed_counties
         fig, ax = plt.subplots()
-        for state in counties:
-            ax.plot(df.index, df[state], marker='o')
+        ax.plot(df.index, df[county].diff(), marker='o')
         ax.legend()
-        ax.set_title ('State cases (' + conf_or_death + ')')
+        ax.set_title ('Number of new cases')
+        plt.show()
+        df = self.deaths_counties
+        fig, ax = plt.subplots()
+        ax.plot(df.index, df[county].diff(), marker='o')
+        ax.legend()
+        ax.set_title ('Number of new deaths')
         plt.show()
 
-    def plot_state_pct_change (self, states):
-        df = self.confirmed_us
-        fig, ax = plt.subplots()
-        for state in states:
-            ax.plot(df.index, df[state].pct_change(), marker='o')
-        ax.legend()
-        ax.set_title ('Daily % incrase in cases')
-        plt.show()
-
-    def plot_state_new_cases (self, states):
-        df = self.confirmed_us
-        fig, ax = plt.subplots()
-        for state in states:
-            ax.plot(df.index, df[state].diff(), marker='o')
-        ax.legend()
-        ax.set_title ('Number of new cases - ')
-        plt.show()
 
     def plot_state (self, state):
         df = self.confirmed_us
@@ -110,35 +95,6 @@ class CovidData:
         ax.plot(df.index, df[state].diff(), marker='o')
         ax.legend()
         ax.set_title ('Number of new deaths')
-        plt.show()
-
-
-
-    def plot_county_new_deaths (self, counties):
-        df = self.deaths_counties
-        fig, ax = plt.subplots()
-        for county in counties:
-            ax.plot(df.index, df[county].diff(), marker='o')
-        ax.legend()
-        ax.set_title ('Number of new deaths')
-        plt.show()
-
-    def plot_county_new_cases (self, counties):
-        df = self.confirmed_counties
-        fig, ax = plt.subplots()
-        for county in counties:
-            ax.plot(df.index, df[county].diff(), marker='o')
-        ax.legend()
-        ax.set_title ('Number of new cases')
-        plt.show()
-
-    def plot_state_new_deaths (self, states):
-        df = self.deaths_us
-        fig, ax = plt.subplots()
-        for state in states:
-            ax.plot(df.index, df[state].diff(), marker='o')
-        ax.legend()
-        ax.set_title ('Number of new deaths ')
         plt.show()
 
 

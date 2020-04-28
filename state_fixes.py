@@ -72,7 +72,10 @@ STATE_MAP = {"Alabama": "AL",
             "Wuhan Evacuee": "Other",
             "American Samoa": "AS",
             'Northern Mariana Islands': 'MP',
-            'Recovered': 'Other'
+            'Recovered': 'Other',
+            'US Military': 'Other',
+            'Federal Bureau of Prisons': 'Other',
+            'Veteran Hospitals': 'Other'
             }
 
 
