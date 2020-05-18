@@ -62,6 +62,15 @@ class CovidData:
     def biggest_counties_list (self):
         return (list (self.biggest_counties_data.index))
 
+    def counties_in_state (self, state):
+        outdf = p.DataFrame()
+        for county in list(self.deaths_counties.columns):
+            if len(county.split(', ')) > 1:
+                cty_state = county.split(', ')[1]
+                if cty_state == state:
+                    outdf[county] = self.deaths_counties[county]
+        return outdf
+
     # def countries_list (self):
     #     return (list (self.confirmed_countries.columns))
 
