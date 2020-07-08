@@ -92,7 +92,7 @@ class CovidData:
         plt.show()
 
 
-    def plot_state (self, state):
+    def plot_state (self, state, days=None):
         df = self.confirmed_us
         fig, ax = plt.subplots()
         ax.plot(df.index, df[state].diff(), marker='o')

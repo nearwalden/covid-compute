@@ -153,7 +153,7 @@ TOP_20 = ["CA","TX","FL","NY","PA","IL","OH","GA","NC","MI","NJ","VA","WA", \
 
 TOP_10 = ["CA","TX","FL","NY","PA","IL","OH","GA","NC","MI"]
 
-INTEREST = ['CA', 'TX', 'FL', 'NY', 'MA', 'IL', 'NJ', 'MI']
+INTEREST = ['CA', 'TX', 'FL', 'NY', 'MA', 'GA', 'AZ']
 
 
   
